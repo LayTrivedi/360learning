@@ -20,11 +20,22 @@ print("Hello, Python!")
     <pre id="output"></pre>
 
     <script type="text/python">
-from browser import document
+from browser import document, window
 
 def runPython():
     code = document["python-code"].value
-    exec(code)
+    output_element = document["output"]
+    output_element.text = ""  # Clear previous output
+    try:
+        exec(code)  # Execute the Python code from the textarea
+    except Exception as e:
+        output_element.text = str(e)  # Display any error that occurs during execution
+
+window.console = window  # Redirect print to the browser console
+
+def print(*args):
+    output_element = document["output"]
+    output_element.text += " ".join(str(arg) for arg in args) + "\n"
 
 document["runPython"] = runPython
     </script>

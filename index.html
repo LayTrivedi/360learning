@@ -17,30 +17,31 @@ print("Hello, Python!")
     <button id="run-button">Run Python</button>
 
     <h3>Output:</h3>
-    <pre id="output"></pre>
+    <pre id="output">Debug: Brython is loaded and ready.\n</pre>
 
     <script type="text/python">
 from browser import document, window
 
-# Define a custom print function to output to the HTML
+# Custom print function to output to the "Output" section in the HTML
 def custom_print(*args):
     output_element = document["output"]
     output_element.text += " ".join(str(arg) for arg in args) + "\n"
 
-# Override the built-in print function with our custom print function
+# Override the default print() function in Python with custom print
 window.print = custom_print
 
-# Function to run Python code from the textarea
+# Function to run the Python code from the textarea
 def runPython(event):
     code = document["python-code"].value
     output_element = document["output"]
-    output_element.text = ""  # Clear previous output
-    try:
-        exec(code)  # Execute the Python code from the textarea
-    except Exception as e:
-        output_element.text += f"Error: {str(e)}\n"  # Display any error that occurs during execution
+    output_element.text = "Running...\n"  # Clear previous output and show running message
 
-# Add an event listener for the button click to trigger Python execution
+    try:
+        exec(code)  # Execute the code
+    except Exception as e:
+        output_element.text += f"Error: {str(e)}\n"  # If there's an error, show it in output
+
+# Bind the button to runPython function
 document["run-button"].bind("click", runPython)
     </script>
 </body>
